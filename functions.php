@@ -1,11 +1,6 @@
 <?php
 /**
- * Twenty Twenty-Five functions and definitions.
- *
- *
- * @package WordPress
- * @subpackage Pinked
- * @since Pinked 1.0
+ * Pinked functions and definitions.
  */
 
 // Adds theme support for post formats.
@@ -113,3 +108,29 @@ if ( ! function_exists( 'pinked_format_binding' ) ) :
 		}
 	}
 endif;
+
+add_theme_support('block-patterns');
+
+function pinked_init_custom_field_block() {
+    // Autoload de las clases
+    foreach (glob(get_template_directory() . '/includes/blocks/renderers/*.php') as $file) {
+        require_once $file;
+    }
+    require_once get_template_directory() . '/includes/blocks/class-jcf-field-block.php';
+
+    // Inicializar el bloque
+    Pinked_Custom_Field_Block::get_instance();
+}
+add_action('init', 'pinked_init_custom_field_block');
+
+function pinked_enqueue_lit() {
+    // Enqueue our custom elements
+    wp_enqueue_script(
+        'pinked-elements',
+        get_template_directory_uri() . '/web-components/dist/web-components.mjs',
+        array(),
+        wp_get_theme()->get('Version'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'pinked_enqueue_lit');
