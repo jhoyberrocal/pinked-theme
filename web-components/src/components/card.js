@@ -15,4 +15,3 @@ export class PkCard extends LitElement {
         `;
     }
 }
-//<!-- wp:pinked/jcf-field { "slug": "imagen-post", "type": "text" } /-->
